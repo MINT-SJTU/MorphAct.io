@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="MorphAct: Contextual Parameterization of Vision–Language–Action Models. A shared adaptation rule that generates context-dependent low-rank updates for robot policies.">
+  <meta property="og:title" content="MorphAct — Contextual Parameterization of VLA Models">
+  <meta property="og:description" content="Share an adaptation rule, specialize the updates. Contextual parameter generation for vision–language–action models.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mint-sjtu.github.io/MorphAct.io/">
+  <meta property="og:image" content="https://mint-sjtu.github.io/MorphAct.io/assets/morphact-teaser.png?v=paper">
+  <meta property="og:image:alt" content="MorphAct generates context-dependent parameter updates through a shared adaptation rule.">
+  <title>MorphAct: Contextual Parameterization of Vision–Language–Action Models</title>
+  <link rel="icon" type="image/svg+xml" href="assets/morphact.svg">
+  <link rel="stylesheet" href="styles.css?v=20">
+  <script src="script.js?v=10" defer></script>
+  <script src="motion.js?v=3" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><nav class="nav wrap" aria-label="Main navigation">
+    <a class="brand" href="#main"><img src="assets/morphact.svg" width="30" height="30" alt="">MorphAct</a>
+    <div class="nav-links"><a href="#demo">Demo</a><a href="#analysis">Motivation</a><a href="#method">Method</a><a href="#results">Benchmarks</a><a href="#ablations">Ablations</a><a href="#real-world">Real world</a></div>
+  </nav></header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="paper-title">
+      <h1 id="paper-title"><span class="title-line"><img src="assets/morphact.svg" width="50" height="50" alt=""><span class="paper-name">Morph<span>Act</span></span>: Contextual Parameterization</span><span class="title-line">of Vision–Language–Action Models</span></h1>
+      <p class="hero-lead">A general framework for contextual adaptation across VLA architectures.</p>
+      <div class="paper-credits">
+        <ul class="author-row" aria-label="Authors">
+          <li>Ziyan Liu<sup>*,1,2</sup></li>
+          <li>Jiting Liu<sup>*,2</sup></li>
+          <li>Weihong Zhong<sup>*,2</sup></li>
+          <li>Wenda Yu<sup>5</sup></li>
+          <li>Yeqiu Chen<sup>1</sup></li>
+        </ul>
+        <ul class="author-row" aria-label="Authors">
+          <li>Jason Li<sup>4</sup></li>
+          <li>Xiaojiang Peng<sup>6</sup></li>
+          <li>Shuyuan Hu<sup>2</sup></li>
+          <li>Kai Wang<sup>3,†</sup></li>
+          <li>Bo Zhao<sup>2,†</sup></li>
+        </ul>
+        <ul class="affiliations" aria-label="Author affiliations">
+          <li><sup>1</sup>University of Science and Technology of China</li>
+          <li><sup>2</sup>School of Artificial Intelligence, Shanghai Jiao Tong University</li>
+          <li><sup>3</sup>National University of Singapore</li>
+          <li><sup>4</sup>Nanyang Technological University</li>
+          <li><sup>5</sup>Tongji University</li>
+          <li><sup>6</sup>Shenzhen Technology University</li>
+        </ul>
+        <p class="author-notes"><span><sup>*</sup>Equal contribution</span><span><sup>†</sup>Corresponding authors</span></p>
+      </div>
+      <div class="institution-logos" aria-label="Participating institutions">
+        <a class="institution-logo institution-ustc" href="https://www.ustc.edu.cn/" target="_blank" rel="noopener" aria-label="University of Science and Technology of China official website"><img src="assets/institutions/ustc-logo.jpg" alt="University of Science and Technology of China" decoding="async"></a>
+        <a class="institution-logo institution-sjtu" href="https://www.sjtu.edu.cn/" target="_blank" rel="noopener" aria-label="Shanghai Jiao Tong University official website"><img src="assets/institutions/sjtu-logo.png" alt="Shanghai Jiao Tong University" decoding="async"></a>
+        <a class="institution-logo institution-nus" href="https://www.nus.edu.sg/" target="_blank" rel="noopener" aria-label="National University of Singapore official website"><img src="assets/institutions/nus-logo.jpg" alt="National University of Singapore" decoding="async"></a>
+        <a class="institution-logo institution-ntu" href="https://www.ntu.edu.sg/" target="_blank" rel="noopener" aria-label="Nanyang Technological University official website"><img src="assets/institutions/ntu-logo.webp" alt="Nanyang Technological University" decoding="async"></a>
+        <a class="institution-logo institution-tongji" href="https://www.tongji.edu.cn/" target="_blank" rel="noopener" aria-label="Tongji University official website"><img src="assets/institutions/tongji-badge.png" alt="Tongji University" decoding="async"></a>
+        <a class="institution-logo institution-sztu" href="https://english.sztu.edu.cn/" target="_blank" rel="noopener" aria-label="Shenzhen Technology University official website"><img src="assets/institutions/sztu-logo.svg" alt="Shenzhen Technology University" decoding="async"></a>
+      </div>
+      <div class="resource-links" aria-label="Research resources">
+        <!-- Replace the arXiv placeholder when the paper URL is available. -->
+        <button class="resource" type="button" disabled aria-label="arXiv paper, coming soon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7zM14 3v5h4M10 12h5M10 16h5"/></svg>
+          <span>arXiv</span><span class="availability">Coming soon</span>
+        </button>
+        <a class="resource" href="https://github.com/MINT-SJTU/MorphAct" target="_blank" rel="noopener" aria-label="Code repository on GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 3l-4 18"/></svg>
+          <span>Code</span>
+        </a>
+      </div>
+      <div class="author-emails" aria-label="Contact emails">
+        <p><a href="mailto:bo.zhao@sjtu.edu.cn">bo.zhao@sjtu.edu.cn</a><a href="mailto:kai.wang960112@gmail.com">kai.wang960112@gmail.com</a></p>
+        <p><a href="mailto:liuziyan@mail.ustc.edu.cn">liuziyan@mail.ustc.edu.cn</a><a href="mailto:liujiting616@gmail.com">liujiting616@gmail.com</a></p>
+      </div>
+    </section>
+    <section id="demo" class="demo-section wrap" aria-label="MorphAct demonstration">
+      <figure><video id="demo-video" src="assets/morphact-demo-light-v14.mp4" poster="assets/morphact-demo-light-v14-title.jpg" controls autoplay loop muted playsinline preload="metadata" aria-label="MorphAct demonstrations on four bimanual tasks"><a href="assets/morphact-demo-light-v14.mp4">MorphAct bimanual demonstrations</a></video>
+      <figcaption>MorphAct in the real world · π<sub>0.5</sub> with contextual adaptation</figcaption></figure>
+    </section>
+
+    <section id="analysis" class="section wrap" aria-labelledby="analysis-title">
+      <div class="section-heading"><div><h2 id="analysis-title">Why contextual updates matter</h2></div><div class="section-intro"><p>Shared adaptation can produce competing descent directions across manipulation contexts. The paper examines this interaction through gradient alignment and one-step transfer, measured at a fixed checkpoint.</p></div></div>
+      <div class="diagnostic-math math-grid">
+        <div><h3>Gradient alignment</h3><div class="equation"><math display="block" translate="no" aria-label="A task gradient is the gradient of the native loss with respect to module parameters. The task-pair alignment is the normalized inner product of two module gradients."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mrow><msub><mo>∇</mo><msub><mi>θ</mi><mi>m</mi></msub></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mfrac><mrow><mo>⟨</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>,</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>⟩</mo></mrow><mrow><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub></mrow></mfrac></mrow></mtd></mtr></mtable></math></div><p class="math-caption">For module <i>m</i>, negative cosine indicates competing local descent directions across task batches.</p></div>
+        <div><h3>One-step transfer</h3><div class="equation"><math display="block" translate="no" aria-label="A source update takes a gradient step from the shared checkpoint. Transfer affinity is one minus the target loss after the update divided by the target loss before it."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>=</mo><mrow><mi>θ</mi><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msub><mi>Z</mi><mrow><mi>i</mi><mo>→</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>)</mo></mrow></mrow><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mfrac></mrow></mrow></mtd></mtr></mtable></math></div><p class="math-caption">A positive transfer score reduces the target loss; a negative score increases it. Every source update starts from the same checkpoint.</p></div>
+      </div>
+      <div class="diagnostic-lead"><figure class="paper-figure">
+      <a class="figure-link" data-lightbox data-figure-title="Gradient conflict and one-step transfer" href="assets/paper/diagnostic-summary.png" target="_blank" rel="noopener" aria-label="Enlarge Gradient conflict and one-step transfer">
+        <img src="assets/paper/diagnostic-summary.png" width="1980" height="765" loading="lazy" decoding="async" alt="At a fixed checkpoint, within-task versus cross-task gradient-conflict rates are 38.94 versus 47.80 percent for VLM and 42.69 versus 48.28 for Action. All 260 source-improving updates increase loss on some other sampled tasks.">
+      </a><figcaption><span><strong>Gradient compatibility, one-step transfer, and cancellation.</strong> Diagnostics at one fixed checkpoint, using sampled losses and gradients.</span></figcaption>
+    </figure><p class="diagnostic-notes"><strong>All 260 source-improving updates increase loss on other sampled tasks.</strong> Cross-task gradient conflict and cancellation are higher in both the VLM and action module. These measurements examine local losses at one fixed checkpoint.</p></div>
+      <div class="diagnostic-grid"><div><h3>Where conflict concentrates</h3><figure class="paper-figure">
+      <a class="figure-link" data-lightbox data-figure-title="Where negative contributions concentrate" href="assets/paper/negative-contributions.png" target="_blank" rel="noopener" aria-label="Enlarge Where negative contributions concentrate">
+        <img src="assets/paper/negative-contributions.png" width="2340" height="1105" loading="lazy" decoding="async" alt="Paper chart of pooled negative cross-task contribution shares by VLM and action parameter group, including the five largest groups and the remaining groups combined.">
+      </a><figcaption><span>Shares describe normalized negative contribution mass, not parameter counts.</span></figcaption>
+    </figure><p class="figure-reading">The action groups outside Transformer blocks, block 00, and block 11 account for <strong>78.88%</strong> of pooled negative contribution before rounding. Together, these groups contribute most of the measured negative mass on the action side.</p></div><div><h3>How it varies with depth</h3><figure class="paper-figure">
+      <a class="figure-link" data-lightbox data-figure-title="Conflict across model depth" href="assets/paper/depth-profiles.png" target="_blank" rel="noopener" aria-label="Enlarge Conflict across model depth">
+        <img src="assets/paper/depth-profiles.png" width="2340" height="1835" loading="lazy" decoding="async" alt="Six paper plots compare cross-task and within-task negative-cosine frequency and mean negative part across the vision, language, and action Transformer blocks.">
+      </a><figcaption><span>Complete depth profiles. The lower panels use independent y-axis scales.</span></figcaption>
+    </figure></div></div>
+    </section>
+
+    <section id="overview" class="section wrap" aria-labelledby="overview-title">
+      <div class="section-heading"><div><h2 id="overview-title">Shared learning, contextual specialization</h2></div>
+        <div class="section-intro"><p>A manipulation task moves from reaching to contact, transport, and precise placement. The demands on perception and control change along the way.</p><p>MorphAct learns a shared rule that maps the current observation, instruction, and robot state to <strong>context-dependent parameter updates</strong>. The policy specializes as the scene changes.</p></div>
+      </div>
+      <div class="equation-note policy-equation">
+          <div class="equation"><math translate="no" display="block" aria-label="Y hat t equals pi with parameters theta plus delta theta of x t, evaluated at x t">
+            <mrow><msub><mover><mi>Y</mi><mo>^</mo></mover><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mrow><mi>θ</mi><mo>+</mo><mstyle mathcolor="#356b58"><mi>Δ</mi><mi>θ</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mstyle></mrow></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mrow>
+          </math></div>
+          <p><span class="inline-math">x<sub>t</sub> = (o<sub>t</sub>, ℓ, s<sub>t</sub>)</span> is the current context; <span class="inline-math">Δθ(x<sub>t</sub>)</span> is its generated update; <span class="inline-math">Ŷ<sub>t</sub></span> is the predicted action chunk.</p>
+        </div>
+      <figure class="paper-figure teaser-figure">
+        <a class="figure-link" data-lightbox data-figure-title="The MorphAct idea" href="assets/morphact-teaser.png?v=paper" target="_blank" rel="noopener" aria-label="Enlarge the MorphAct teaser">
+          <img src="assets/morphact-teaser.png?v=paper" width="3199" height="1106" fetchpriority="high" alt="Paper teaser: (a) a block-placement task progresses through free-space motion, contact, transport, and precise placement; (b) static adaptation applies one fixed update across changing contexts; (c) MorphAct uses a shared adaptation rule to generate context-dependent parameter updates. Operation labels are illustrative, not model inputs.">
+
+        </a>
+        <figcaption><div><strong>A shared rule, context-dependent updates.</strong> The task progresses while the generated update changes with the observation.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
+      </figure>
+    </section>
+
+
+
+    <section id="method" class="section wrap" aria-labelledby="method-title">
+      <div class="section-heading"><div><h2 id="method-title">From adapted perception to adapted action</h2></div>
+        <div class="section-intro"><p>The action update should respond to the representation that guides control. MorphAct connects its generators through <strong>adapted vision–language features</strong>, together with robot state. Updates are generated once per observation and reused throughout the action chunk.</p></div>
+      </div>
+      <figure class="paper-figure method-figure">
+        <a class="figure-link" data-lightbox data-figure-title="Representation-coupled parameter generation" href="assets/morphact-method.png" target="_blank" rel="noopener" aria-label="Enlarge the paper method figure">
+          <img src="assets/morphact-method.png" width="2662" height="1331" loading="lazy" alt="Paper method figure: the VLM generator adapts multimodal features; adapted features and projected robot state condition the action generator. The lower panels show joint learning through two differentiable routes and reuse of generated updates throughout an action chunk.">
+          <svg class="method-motion-overlay" data-method-motion viewBox="0 0 2048 1024" aria-hidden="true" focusable="false" pointer-events="none">
+  <g data-method-phase="vlm" class="method-motion-phase method-motion-vlm" opacity="0">
+    <rect class="method-motion-outline" x="525" y="120" width="314" height="193" rx="17" />
+    <g data-method-late opacity="0">
+      <rect class="method-motion-outline" x="530" y="400" width="296" height="153" rx="18" />
+      <path class="method-motion-route method-motion-update" d="M674 312 V396" />
+      <path class="method-motion-outline" d="M694 320 H770 L786 336 V383 H694 Z" />
+    </g>
+  </g>
+  <g data-method-phase="features" class="method-motion-phase method-motion-features" opacity="0">
+    <rect class="method-motion-outline" x="855" y="261" width="284" height="141" rx="17" />
+    <rect class="method-motion-outline" x="898" y="457" width="172" height="47" rx="13" />
+    <g data-method-late opacity="0">
+      <path class="method-motion-route" d="M824 433 H872 V364 H897 M1099 366 H1212 V316 M1334 286 H1359" />
+      <path class="method-motion-route" d="M1068 474 H1359" />
+    </g>
+  </g>
+  <g data-method-phase="action" class="method-motion-phase method-motion-action" opacity="0">
+    <rect class="method-motion-outline" x="1358" y="123" width="312" height="191" rx="17" />
+    <g data-method-late opacity="0">
+      <rect class="method-motion-outline" x="1363" y="400" width="296" height="149" rx="18" />
+      <path class="method-motion-route method-motion-update" d="M1507 312 V396" />
+      <path class="method-motion-outline" d="M1526 320 H1602 L1618 336 V384 H1526 Z" />
+    </g>
+  </g>
+</svg>
+        </a>
+        <figcaption><div><strong>Representation-coupled parameter generation.</strong> Joint learning and chunk-level reuse are shown in the two lower panels.
+          <span class="method-motion-caption">
+  <span data-method-caption-phase="vlm">VLM update</span>
+  <span aria-hidden="true">→</span>
+  <span data-method-caption-phase="features">Adapted features</span>
+  <span aria-hidden="true">→</span>
+  <span data-method-caption-phase="action">Action update</span>
+</span></div></figcaption>
+      </figure>
+      <div class="math-derivation">
+        <h3>Coupled parameter generation</h3>
+        <div class="math-grid generation-equations"><div><div class="equation"><math display="block" translate="no" aria-label="The VLM generator maps embeddings to a parameter update; the adapted VLM produces h t and C t."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mrow><mi>v</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><mrow><msub><mi>G</mi><mi>v</mi></msub><mrow><mo>(</mo><msub><mi>e</mi><mi>t</mi></msub><mo>;</mo><msub><mi>φ</mi><mi>v</mi></msub><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><mrow><mo>(</mo><msub><mi>h</mi><mi>t</mi></msub><mo>,</mo><msub><mi>C</mi><mi>t</mi></msub><mo>)</mo></mrow><mo>=</mo><mrow><msub><mi>F</mi><mi>v</mi></msub><mrow><mo>(</mo><msub><mi>e</mi><mi>t</mi></msub><mo>;</mo><msub><mi>θ</mi><mi>v</mi></msub><mo>+</mo><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mrow><mi>v</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>)</mo></mrow></mrow></mrow></mtd></mtr></mtable></math></div></div><div><div class="equation"><math display="block" translate="no" aria-label="The action condition combines adapted features and robot state; the action generator maps it to an action parameter update."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msub><mi>u</mi><mrow><mi>a</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><mrow><msub><mi>C</mi><mi>a</mi></msub><mrow><mo>(</mo><msub><mi>h</mi><mi>t</mi></msub><mo>,</mo><msub><mi>s</mi><mi>t</mi></msub><mo>;</mo><msub><mi>ρ</mi><mi>a</mi></msub><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mrow><mi>a</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><mrow><msub><mi>G</mi><mi>a</mi></msub><mrow><mo>(</mo><msub><mi>u</mi><mrow><mi>a</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>;</mo><msub><mi>φ</mi><mi>a</mi></msub><mo>)</mo></mrow></mrow></mrow></mtd></mtr></mtable></math></div></div></div>
+        <p class="math-caption">Both <i>h</i><sub>t</sub> and <i>C</i><sub>t</sub> come from the adapted VLM pass: <i>h</i><sub>t</sub> conditions the action generator, while <i>C</i><sub>t</sub> follows the native action-conditioning path.</p>
+        <div class="equation-note low-rank-equation">
+          <div class="equation"><math translate="no" display="block" aria-label="Delta W j t equals alpha j over r j times A j t B j t">
+            <mrow><msub><mrow><mi>Δ</mi><mi>W</mi></mrow><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><mfrac><msub><mi>α</mi><mi>j</mi></msub><msub><mi>r</mi><mi>j</mi></msub></mfrac><mstyle mathcolor="#356b58"><msub><mi>A</mi><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub></mstyle><mstyle mathcolor="#775999"><msub><mi>B</mi><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub></mstyle></mrow>
+          </math></div>
+          <p>For block <i>j</i>, <span class="inline-math">A: d<sub>in</sub> × r</span> and <span class="inline-math">B: r × d<sub>out</sub></span>. The base weights stay frozen; the low-rank factors change with the context.</p>
+        </div>
+        <div class="coupling-math"><h3>One action loss, two differentiable routes</h3>
+        <p class="math-intro">The native action loss trains the upstream generator through both the adapted action condition and the generated action parameters.</p>
+        <div class="coupling-main"><div class="equation"><math display="block" translate="no" aria-label="The gradient of the per-sample action loss with respect to the VLM generator equals the transposed representation Jacobian times the sum of the conditioning and parameter-generation gradient terms."><mrow><mrow><msub><mo>∇</mo><msub><mi>φ</mi><mi>v</mi></msub></msub><msub><mi>ℓ</mi><mi>t</mi></msub></mrow><mo>=</mo><mrow><msubsup><mi>J</mi><mrow><msub><mi>r</mi><mi>t</mi></msub><mo>,</mo><msub><mi>φ</mi><mi>v</mi></msub></mrow><mo>⊤</mo></msubsup><mrow><mo>(</mo><msub><mi>g</mi><mtext>cond</mtext></msub><mo>+</mo><msub><mi>g</mi><mtext>param</mtext></msub><mo>)</mo></mrow></mrow></mrow></math></div></div>
+        <div class="math-grid route-equations"><div><div class="equation"><math display="block" translate="no" aria-label="The conditioning term is the partial derivative of the loss with respect to the adapted representation, holding the action update fixed."><mrow><msub><mi>g</mi><mtext>cond</mtext></msub><mo>=</mo><mfrac><mrow><mo>∂</mo><msub><mi>ℓ</mi><mi>t</mi></msub></mrow><mrow><mo>∂</mo><msub><mi>r</mi><mi>t</mi></msub></mrow></mfrac></mrow></math></div><p class="route-label">Action conditioning</p></div><div><div class="equation"><math display="block" translate="no" aria-label="The parameter-generation term applies the transposed Jacobian of the generated action update to the loss derivative with respect to that update."><mrow><msub><mi>g</mi><mtext>param</mtext></msub><mo>=</mo><mrow><msubsup><mi>J</mi><mrow><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mrow><mi>a</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>,</mo><msub><mi>r</mi><mi>t</mi></msub></mrow><mo>⊤</mo></msubsup><mfrac><mrow><mo>∂</mo><msub><mi>ℓ</mi><mi>t</mi></msub></mrow><mrow><mo>∂</mo><msub><mrow><mi>Δ</mi><mi>θ</mi></mrow><mrow><mi>a</mi><mo>,</mo><mi>t</mi></mrow></msub></mrow></mfrac></mrow></mrow></math></div><p class="route-label">Action-side parameter generation</p></div></div>
+        <p class="math-caption">Here <i>r</i><sub>t</sub> = (<i>h</i><sub>t</sub>, <i>C</i><sub>t</sub>), ℓ<sub>t</sub> is the per-sample native loss, and <i>J</i><sub>y,z</sub> = ∂<i>y</i>/∂<i>z</i>. Both routes remain differentiable.</p></div>
+      </div>
+      <details class="method-detail">
+          <summary>Training objective and factored execution <span aria-hidden="true">+</span></summary>
+          <div class="detail-content">
+            <h3>Apply the factors directly</h3>
+            <div class="equation"><math translate="no" display="block" aria-label="y equals u W base plus alpha j over r j times u A j t B j t">
+            <mrow><mi>y</mi><mo>=</mo><mi>u</mi><msub><mi>W</mi><mtext>base</mtext></msub><mo>+</mo><mfrac><msub><mi>α</mi><mi>j</mi></msub><msub><mi>r</mi><mi>j</mi></msub></mfrac><mo>(</mo><mi>u</mi><msub><mi>A</mi><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>)</mo><msub><mi>B</mi><mrow><mi>j</mi><mo>,</mo><mi>t</mi></mrow></msub></mrow>
+          </math></div>
+            <p>The row-vector projection uses a factored residual, without materializing a dense update. Factor layouts follow each backbone’s projection geometry.</p>
+            <h3>Retain the native action objective</h3>
+            <div class="equation"><math translate="no" display="block" aria-label="Minimize over Phi the expectation over demonstrations and native randomness of L native of y hat Phi of x t, Y t and xi, compared with Y t">
+            <mrow><munder><mo>min</mo><mi>Φ</mi></munder><msub><mi>𝔼</mi><mrow><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>Y</mi><mi>t</mi></msub><mo>)</mo><mo>∼</mo><mi>𝒟</mi><mo>,</mo><mi>ξ</mi></mrow></msub><mo>[</mo><msub><mi>ℒ</mi><mtext>native</mtext></msub><mo>(</mo><msub><mover><mi>y</mi><mo>^</mo></mover><mi>Φ</mi></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>,</mo><msub><mi>Y</mi><mi>t</mi></msub><mo>;</mo><mi>ξ</mi><mo>)</mo><mo>,</mo><msub><mi>Y</mi><mi>t</mi></msub><mo>;</mo><mi>ξ</mi><mo>)</mo><mo>]</mo></mrow>
+          </math></div>
+            <p>Φ includes both generators, the state projection, and projectors retained as trainable by the adaptation configuration. ξ is the randomness used by the native objective.</p>
+            <p>For π<sub>0</sub> and π<sub>0.5</sub>, training samples a time τ and predicts the velocity on the action–noise path:</p>
+            <div class="equation"><math translate="no" display="block" aria-label="z tau equals tau epsilon plus one minus tau times Y t. The target velocity is epsilon minus Y t."><mtable columnalign="left" rowspacing="0.7em"><mtr><mtd><msub><mi>z</mi><mi>τ</mi></msub><mo>=</mo><mi>τ</mi><mi>ε</mi><mo>+</mo><mo>(</mo><mn>1</mn><mo>−</mo><mi>τ</mi><mo>)</mo><msub><mi>Y</mi><mi>t</mi></msub></mtd></mtr><mtr><mtd><msub><mi>v</mi><mtext>target</mtext></msub><mo>=</mo><mi>ε</mi><mo>−</mo><msub><mi>Y</mi><mi>t</mi></msub></mtd></mtr></mtable></math></div>
+            <p>The action generator uses final adapted multimodal tokens and robot state. Layer-wise prefix key–value states provide native action conditioning. Noisy actions and solver time remain in the native action path.</p>
+          </div>
+        </details>
+    </section>
+
+    <section id="results" class="section wrap" aria-labelledby="results-title">
+      <div class="section-heading"><div><h2 id="results-title">Consistent gains across VLA architectures</h2></div>
+        <div class="section-intro"><p>MorphAct brings contextual specialization to VLA policies, improving overall task success across different architectures and benchmarks.</p></div>
+      </div>
+
+      <div class="benchmark-panel" id="panel-metaworld" role="region" aria-labelledby="metaworld-title">
+      <div class="benchmark-heading"><div><h3 id="metaworld-title">Meta-World</h3><p>50 tasks · 4 difficulty groups · 1,000 rollouts per evaluation</p></div><p class="legend"><span class="baseline-key">Baseline</span><span class="ours-key">Baseline + MorphAct</span></p></div>
+      <div class="benchmark-charts" data-charts="metaworld" hidden></div>
+      <p class="benchmark-finding"><strong>Gains extend to harder tasks.</strong> π<sub>0</sub> improves Very Hard from 20.00% to 58.00%. π<sub>0.5</sub> improves Hard from 38.30% to 66.39%.</p>
+      <details class="results-details"><summary>All suite scores &amp; evaluation protocol <span aria-hidden="true">+</span></summary>
+        <p class="table-hint">Scroll to see every column <span aria-hidden="true">↔</span></p>
+        <div class="table-scroll" role="region" aria-label="Meta-World complete success rates" tabindex="0"><table class="results-table" data-benchmark="metaworld">
+            <caption>Success rate (%) · complete breakdown</caption>
+            <thead><tr><th scope="col">Backbone</th><th scope="col">Method</th><th scope="col">Easy</th><th scope="col">Medium</th><th scope="col">Hard</th><th scope="col">Very Hard</th><th scope="col">Avg.</th><th scope="col">Var. (pp²)</th></tr></thead>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">X-VLA</th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell">72.50</td><td class="suite-cell">46.36</td><td class="suite-cell">48.30</td><td class="suite-cell"><strong>55.00</strong></td><td class="mean-cell">55.54</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell"><strong>83.99</strong></td><td class="suite-cell"><strong>58.18</strong></td><td class="suite-cell"><strong>55.28</strong></td><td class="suite-cell"><strong>55.00</strong></td><td class="mean-cell"><strong>63.11</strong></td><td class="variance-cell">1.8400</td></tr></tbody>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">π<sub>0</sub></th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell">77.90</td><td class="suite-cell">51.80</td><td class="suite-cell">53.30</td><td class="suite-cell">20.00</td><td class="mean-cell">50.75</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell"><strong>82.44</strong></td><td class="suite-cell"><strong>71.36</strong></td><td class="suite-cell"><strong>56.39</strong></td><td class="suite-cell"><strong>58.00</strong></td><td class="mean-cell"><strong>67.05</strong></td><td class="variance-cell">0.6342</td></tr></tbody>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">π<sub>0.5</sub></th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell">70.50</td><td class="suite-cell">45.00</td><td class="suite-cell">38.30</td><td class="suite-cell">41.00</td><td class="mean-cell">48.70</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell"><strong>85.77</strong></td><td class="suite-cell"><strong>59.85</strong></td><td class="suite-cell"><strong>66.39</strong></td><td class="suite-cell"><strong>45.67</strong></td><td class="mean-cell"><strong>64.42</strong></td><td class="variance-cell">0.3970</td></tr></tbody>
+          </table></div>
+        <p class="protocol">Twenty rollouts per task. Avg. gives equal weight to Easy (28 tasks), Medium (11), Hard (6), and Very Hard (5). MorphAct scores average three selected evaluations. Var. is the sample variance of their overall scores (pp²); baseline variance is unreported. Bold marks the best score within each backbone, including ties.</p>
+      </details>
+    </div>
+      <div class="benchmark-panel" id="panel-libero" role="region" aria-labelledby="libero-title">
+      <div class="benchmark-heading"><div><h3 id="libero-title">LIBERO</h3><p>40 tasks · 4 suites · 2,000 rollouts per evaluation</p></div><p class="legend"><span class="baseline-key">Baseline</span><span class="ours-key">Baseline + MorphAct</span></p></div>
+      <div class="benchmark-charts" data-charts="libero" hidden></div>
+      <p class="benchmark-finding"><strong>The largest gains are on Long.</strong> +9.00% for X-VLA, +7.20% for π<sub>0</sub>, and +5.13% for π<sub>0.5</sub>.</p>
+      <details class="results-details"><summary>All suite scores &amp; evaluation protocol <span aria-hidden="true">+</span></summary>
+        <p class="table-hint">Scroll to see every column <span aria-hidden="true">↔</span></p>
+        <div class="table-scroll" role="region" aria-label="LIBERO complete success rates" tabindex="0"><table class="results-table" data-benchmark="libero">
+            <caption>Success rate (%) · complete breakdown</caption>
+            <thead><tr><th scope="col">Backbone</th><th scope="col">Method</th><th scope="col">Spatial</th><th scope="col">Object</th><th scope="col">Goal</th><th scope="col">Long</th><th scope="col">Mean</th><th scope="col">Var. (pp²)</th></tr></thead>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">X-VLA</th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell">95.40</td><td class="suite-cell">96.60</td><td class="suite-cell">96.00</td><td class="suite-cell">84.20</td><td class="mean-cell">93.05</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell"><strong>98.67</strong></td><td class="suite-cell"><strong>99.87</strong></td><td class="suite-cell"><strong>97.07</strong></td><td class="suite-cell"><strong>93.20</strong></td><td class="mean-cell"><strong>97.20</strong></td><td class="variance-cell">0.0300</td></tr></tbody>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">π<sub>0</sub></th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell">96.80</td><td class="suite-cell">98.80</td><td class="suite-cell">95.80</td><td class="suite-cell">85.20</td><td class="mean-cell">94.15</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell"><strong>98.00</strong></td><td class="suite-cell"><strong>99.60</strong></td><td class="suite-cell"><strong>96.60</strong></td><td class="suite-cell"><strong>92.40</strong></td><td class="mean-cell"><strong>96.65</strong></td><td class="variance-cell">0.0517</td></tr></tbody>
+            <tbody><tr class="baseline-row"><th scope="rowgroup" rowspan="2" class="backbone-cell">π<sub>0.5</sub></th><th scope="row" class="method-cell">Baseline</th><td class="suite-cell"><strong>98.80</strong></td><td class="suite-cell">98.20</td><td class="suite-cell">98.00</td><td class="suite-cell">92.40</td><td class="mean-cell">96.85</td><td class="variance-cell">—</td></tr>
+              <tr class="ours-row"><th scope="row" class="method-cell">MorphAct</th><td class="suite-cell">98.33</td><td class="suite-cell"><strong>99.67</strong></td><td class="suite-cell"><strong>98.87</strong></td><td class="suite-cell"><strong>97.53</strong></td><td class="mean-cell"><strong>98.60</strong></td><td class="variance-cell">0.0525</td></tr></tbody>
+          </table></div>
+        <p class="protocol">Each suite contains 10 tasks, evaluated with 50 rollouts per task and execution horizon H10. Mean averages the four suites. MorphAct scores average three selected evaluations. Var. is the sample variance of their overall scores (pp²); baseline variance is unreported. Bold marks the best score within each backbone, including ties.</p>
+      </details>
+    </div>
+    </section>
+
+    <section id="ablations" class="section wrap" aria-labelledby="ablations-title">
+      <div class="section-heading"><div><h2 id="ablations-title">The ingredients of contextual adaptation</h2></div>
+        <div class="section-intro"><p>Six X-VLA variants on LIBERO isolate three choices: <strong>the generation condition, the modules receiving updates, and the features connecting the generators.</strong></p></div></div>
+      <div class="ablation-charts" aria-label="Ablation success rates on LIBERO">
+        <figure class="ablation-chart-panel"><h3>Mean over all suites</h3><div data-ablation-chart="4"></div></figure>
+        <figure class="ablation-chart-panel"><h3>Long-horizon tasks</h3><div data-ablation-chart="3"></div></figure>
+      </div>
+      <p class="ablation-legend legend"><span class="ours-key">MorphAct</span><span class="baseline-key">Ablated variant</span></p>
+      <div class="ablation-findings">
+        <p><strong>Context beyond task identity.</strong> Current-context generation reaches 97.20% mean success, versus 88.25% for Task-ID and 87.50% for a constant condition—a <span class="finding-gain">+8.95%</span> gain over Task-ID.</p>
+        <p><strong>Adapt both modules.</strong> Action-only reaches 81.00%; VLM-only, 43.50%. Adding upstream adaptation raises Action-only to 86.00%, even before coupling.</p>
+        <p><strong>Couple through adapted features.</strong> Mean success rises from 86.00% to 97.20% (<span class="finding-gain">+11.20%</span>). On Long, it rises from 71.60% to 93.20% (<span class="finding-gain">+21.60%</span>).</p>
+      </div>
+      <details class="results-details"><summary>All ablation scores &amp; controlled changes <span aria-hidden="true">+</span></summary><p class="table-hint">Scroll to see every column ↔</p><div class="table-scroll" role="region" aria-label="Full X-VLA ablation results" tabindex="0"><table class="results-table ablation-table" data-benchmark="ablations">
+            <caption>X-VLA ablations on LIBERO · success rate (%)</caption>
+            <thead><tr><th scope="col">Variant / controlled change</th><th scope="col">Spatial</th><th scope="col">Object</th><th scope="col">Goal</th><th scope="col">Long</th><th scope="col">Mean</th></tr></thead>
+            <tbody><tr class="ours-row"><th scope="row">MorphAct<span class="variant-description">Current context; both modules; adapted features</span></th><td class="suite-cell"><strong>98.67</strong></td><td class="suite-cell"><strong>99.87</strong></td><td class="suite-cell"><strong>97.07</strong></td><td class="suite-cell"><strong>93.20</strong></td><td class="mean-cell"><strong>97.20</strong></td></tr>
+              <tr><th scope="row">Constant<span class="variant-description">One fixed generation condition across all tasks</span></th><td class="suite-cell">93.40</td><td class="suite-cell">90.00</td><td class="suite-cell">89.00</td><td class="suite-cell">77.60</td><td class="mean-cell">87.50</td></tr>
+              <tr><th scope="row">Task-ID<span class="variant-description">One fixed generation condition per task</span></th><td class="suite-cell">90.00</td><td class="suite-cell">90.80</td><td class="suite-cell">91.20</td><td class="suite-cell">81.00</td><td class="mean-cell">88.25</td></tr>
+              <tr><th scope="row">VLM-only<span class="variant-description">Generated updates in the VLM only</span></th><td class="suite-cell">40.00</td><td class="suite-cell">59.00</td><td class="suite-cell">42.00</td><td class="suite-cell">33.00</td><td class="mean-cell">43.50</td></tr>
+              <tr><th scope="row">Action-only<span class="variant-description">Generated updates in the action module only</span></th><td class="suite-cell">88.80</td><td class="suite-cell">92.00</td><td class="suite-cell">73.80</td><td class="suite-cell">69.40</td><td class="mean-cell">81.00</td></tr>
+              <tr><th scope="row">Unadapted<span class="variant-description">Pre-adaptation features condition the action generator</span></th><td class="suite-cell">91.00</td><td class="suite-cell">97.80</td><td class="suite-cell">83.60</td><td class="suite-cell">71.60</td><td class="mean-cell">86.00</td></tr></tbody>
+          </table></div><p class="protocol">Constant and Task-ID change only the generation condition, retaining normal policy inputs. VLM-only and Action-only disable generated updates in the other module. Unadapted keeps both generators and adapted action prediction; only its action generator receives pre-adaptation features. Mean averages the four suites.</p></details>
+    </section>
+
+
+    <section id="real-world" class="section wrap" aria-labelledby="real-world-title">
+      <div class="section-heading"><div><h2 id="real-world-title">Real-world manipulation</h2></div><div class="section-intro"><p>MorphAct improves π<sub>0.5</sub> on all four physical tasks by <strong>8–14%</strong>. Each method is evaluated over 50 physical rollouts per task.</p><p>The paired demonstrations show separate trials at equal playback speed within each task; the scores summarize the full evaluations.</p></div></div>
+      <div class="task-gallery"><article class="task-card">
+      <a class="task-image" data-lightbox data-figure-title="Sort Letters — paper rollout frame" href="assets/paper/sort-letters.png" target="_blank" rel="noopener" aria-label="Enlarge the Sort Letters task frame"><img src="assets/paper/sort-letters.png" width="640" height="480" loading="lazy" alt="Sort Letters: representative rollout frame from the paper"></a>
+      <div class="task-body"><p class="task-index">01 <span>+10%</span></p><h3>Sort Letters</h3><p class="task-description">Arrange letter blocks through coordinated grasps and changes in orientation.</p>
+        <div class="task-score"><span>π<sub>0.5</sub></span><div class="task-track"><i style="width:82%"></i></div><b>82%</b></div>
+        <div class="task-score ours"><span>MorphAct</span><div class="task-track"><i style="width:92%"></i></div><b>92%</b></div>
+        <a class="watch-trial" href="assets/demos/letter-arrangement-light-v14.mp4" data-video data-task="Sort Letters" data-poster="assets/demos/letter-arrangement-light-v14.jpg" data-description="Arrange letter blocks through coordinated grasps and changes in orientation." aria-label="Play Sort Letters paired trials"><span class="play-icon" aria-hidden="true">▶</span> Play comparison <span aria-hidden="true">↗</span></a>
+      </div></article><article class="task-card">
+      <a class="task-image" data-lightbox data-figure-title="Sort Hardware — paper rollout frame" href="assets/paper/sort-hardware.png" target="_blank" rel="noopener" aria-label="Enlarge the Sort Hardware task frame"><img src="assets/paper/sort-hardware.png" width="448" height="336" loading="lazy" alt="Sort Hardware: representative rollout frame from the paper"></a>
+      <div class="task-body"><p class="task-index">02 <span>+14%</span></p><h3>Sort Hardware</h3><p class="task-description">Select hardware and sort it into the target containers.</p>
+        <div class="task-score"><span>π<sub>0.5</sub></span><div class="task-track"><i style="width:8%"></i></div><b>8%</b></div>
+        <div class="task-score ours"><span>MorphAct</span><div class="task-track"><i style="width:22%"></i></div><b>22%</b></div>
+        <a class="watch-trial" href="assets/demos/object-sorting-light-v14.mp4" data-video data-task="Sort Hardware" data-poster="assets/demos/object-sorting-light-v14.jpg" data-description="Select hardware and sort it into the target containers." aria-label="Play Sort Hardware paired trials"><span class="play-icon" aria-hidden="true">▶</span> Play comparison <span aria-hidden="true">↗</span></a>
+      </div></article><article class="task-card">
+      <a class="task-image" data-lightbox data-figure-title="Deliver Water — paper rollout frame" href="assets/paper/deliver-water.png" target="_blank" rel="noopener" aria-label="Enlarge the Deliver Water task frame"><img src="assets/paper/deliver-water.png" width="640" height="480" loading="lazy" alt="Deliver Water: representative rollout frame from the paper"></a>
+      <div class="task-body"><p class="task-index">03 <span>+8%</span></p><h3>Deliver Water</h3><p class="task-description">Grasp, lift, and transfer water bottles between locations.</p>
+        <div class="task-score"><span>π<sub>0.5</sub></span><div class="task-track"><i style="width:78%"></i></div><b>78%</b></div>
+        <div class="task-score ours"><span>MorphAct</span><div class="task-track"><i style="width:86%"></i></div><b>86%</b></div>
+        <a class="watch-trial" href="assets/demos/bottle-handling-light-v14.mp4" data-video data-task="Deliver Water" data-poster="assets/demos/bottle-handling-light-v14.jpg" data-description="Grasp, lift, and transfer water bottles between locations." aria-label="Play Deliver Water paired trials"><span class="play-icon" aria-hidden="true">▶</span> Play comparison <span aria-hidden="true">↗</span></a>
+      </div></article><article class="task-card">
+      <a class="task-image" data-lightbox data-figure-title="Cabinet Storage — paper rollout frame" href="assets/paper/cabinet-storage.png" target="_blank" rel="noopener" aria-label="Enlarge the Cabinet Storage task frame"><img src="assets/paper/cabinet-storage.png" width="640" height="480" loading="lazy" alt="Cabinet Storage: representative rollout frame from the paper"></a>
+      <div class="task-body"><p class="task-index">04 <span>+12%</span></p><h3>Cabinet Storage</h3><p class="task-description">Engage the handle and place an object inside the cabinet.</p>
+        <div class="task-score"><span>π<sub>0.5</sub></span><div class="task-track"><i style="width:84%"></i></div><b>84%</b></div>
+        <div class="task-score ours"><span>MorphAct</span><div class="task-track"><i style="width:96%"></i></div><b>96%</b></div>
+        <a class="watch-trial" href="assets/demos/drawer-storage-light-v14.mp4" data-video data-task="Cabinet Storage" data-poster="assets/demos/drawer-storage-light-v14.jpg" data-description="Engage the handle and place an object inside the cabinet." aria-label="Play Cabinet Storage paired trials"><span class="play-icon" aria-hidden="true">▶</span> Play comparison <span aria-hidden="true">↗</span></a>
+      </div></article></div>
+      <p class="chart-note">Photos reproduce the paper’s representative rollout frames. Success rates summarize all 50 rollouts per method and task.</p>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand" href="#main"><img src="assets/morphact.svg" width="30" height="30" alt="">MorphAct</a><p>Contextual Parameterization of Vision–Language–Action Models</p><a class="back-to-top" href="#main">Back to top ↑</a></div></footer>
+  <dialog class="figure-dialog" id="figure-dialog" aria-labelledby="figure-dialog-title">
+    <div class="dialog-toolbar">
+      <h2 id="figure-dialog-title">Figure</h2>
+      <div class="dialog-actions">
+        <button type="button" class="icon-button" data-close aria-label="Close figure" autofocus><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M6 18 18 6"/></svg></button>
+      </div>
+    </div>
+    <div class="dialog-canvas"><img alt=""></div>
+    <p class="dialog-hint">Esc to close</p>
+  </dialog>
+  <dialog class="video-dialog" id="video-dialog" aria-labelledby="video-dialog-title"><div class="dialog-toolbar"><h2 id="video-dialog-title">Paired demonstration</h2><button type="button" class="icon-button" data-close-video aria-label="Close video" autofocus>×</button></div><video controls playsinline preload="metadata"></video><div class="video-dialog-caption"><p data-video-description></p><p>Separate MorphAct and π<sub>0.5</sub> trials · equal playback speed within this task · aggregate success is reported on the page.</p></div></dialog>
+</body>
+</html>
