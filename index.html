@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="MorphAct: Contextual Parameterization of Vision–Language–Action Models. A shared adaptation rule that generates context-dependent low-rank updates for robot policies.">
-  <meta property="og:title" content="MorphAct — Contextual Parameterization of VLA Models">
-  <meta property="og:description" content="Share an adaptation rule, specialize the updates. Contextual parameter generation for vision–language–action models.">
+  <meta name="description" content="MorphAct: Robot Policies Morphing with the Worlds They Act In. A shared policy adjusts its effective weights to the current interaction through coupled vision–language and action parameter generation.">
+  <meta property="og:title" content="MorphAct: Robot Policies Morphing with the Worlds They Act In">
+  <meta property="og:description" content="As environments and operations change, MorphAct generates context-dependent weights for perception and control within one shared robot policy.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mint-sjtu.github.io/MorphAct.io/">
   <meta property="og:image" content="https://mint-sjtu.github.io/MorphAct.io/assets/morphact-teaser.png?v=paper">
-  <meta property="og:image:alt" content="MorphAct generates context-dependent parameter updates through a shared adaptation rule.">
-  <title>MorphAct: Contextual Parameterization of Vision–Language–Action Models</title>
+  <meta property="og:image:alt" content="MorphAct lets a shared robot policy adjust its effective weights as interaction demands change.">
+  <title>MorphAct: Robot Policies Morphing with the Worlds They Act In</title>
   <link rel="icon" type="image/svg+xml" href="assets/morphact.svg">
   <link rel="stylesheet" href="styles.css?v=20">
   <script src="script.js?v=10" defer></script>
@@ -26,8 +26,8 @@
 
   <main id="main">
     <section class="hero wrap" aria-labelledby="paper-title">
-      <h1 id="paper-title"><span class="title-line"><img src="assets/morphact.svg" width="50" height="50" alt=""><span class="paper-name">Morph<span>Act</span></span>: Contextual Parameterization</span><span class="title-line">of Vision–Language–Action Models</span></h1>
-      <p class="hero-lead">A general framework for contextual adaptation across VLA architectures.</p>
+      <h1 id="paper-title"><span class="title-line"><img src="assets/morphact.svg" width="50" height="50" alt=""><span class="paper-name">Morph<span>Act</span></span>: Robot Policies Morphing</span><span class="title-line">with the Worlds They Act In</span></h1>
+      <p class="hero-lead">One shared policy, with effective weights that adapt to the current interaction.</p>
       <div class="paper-credits">
         <ul class="author-row" aria-label="Authors">
           <li>Ziyan Liu<sup>*,1,2</sup></li>
@@ -78,13 +78,13 @@
       </div>
     </section>
     <section id="demo" class="demo-section wrap" aria-label="MorphAct demonstration">
-      <figure><video id="demo-video" src="assets/morphact-demo-light-v14.mp4" poster="assets/morphact-demo-light-v14-title.jpg" controls autoplay loop muted playsinline preload="metadata" aria-label="MorphAct demonstrations on four bimanual tasks"><a href="assets/morphact-demo-light-v14.mp4">MorphAct bimanual demonstrations</a></video>
-      <figcaption>MorphAct in the real world · π<sub>0.5</sub> with contextual adaptation</figcaption></figure>
+      <figure><video id="demo-video" src="assets/morphact-demo-light-v14.mp4?v=morphing" poster="assets/morphact-demo-light-v14-title.jpg?v=morphing" controls autoplay loop muted playsinline preload="metadata" aria-label="MorphAct demonstrations on four bimanual tasks"><a href="assets/morphact-demo-light-v14.mp4?v=morphing">MorphAct bimanual demonstrations</a></video>
+      <figcaption>MorphAct in the real world · π<sub>0.5</sub> with context-dependent weights</figcaption></figure>
     </section>
 
     <section id="overview" class="section wrap" aria-labelledby="overview-title">
-      <div class="section-heading"><div><h2 id="overview-title">Shared learning, contextual specialization</h2></div>
-        <div class="section-intro"><p>A manipulation task moves from reaching to contact, transport, and precise placement. The demands on perception and control change along the way.</p><p>MorphAct learns a shared rule that maps the current observation, instruction, and robot state to <strong>context-dependent parameter updates</strong>. The policy specializes as the scene changes.</p></div>
+      <div class="section-heading"><div><h2 id="overview-title">Changing demands, context-dependent weights</h2></div>
+        <div class="section-intro"><p>As robots encounter more environments and operations, a shared policy must accommodate increasingly diverse demands. Even placing an object in a tray involves reaching, contact, transport, and precise placement under one instruction.</p><p>Conventional VLA policies change their activations and actions with context, while their effective weights stay fixed during execution. Different operations can favor competing parameter updates, creating trade-offs when trained together.</p><p>MorphAct lets the policy’s <strong>effective weights change with the current interaction</strong>. It learns a shared rule that generates context-dependent updates for the vision–language and action modules, enabling specialization within one policy.</p></div>
       </div>
       <div class="equation-note policy-equation">
           <div class="equation"><math translate="no" display="block" aria-label="Y hat t equals pi with parameters theta plus delta theta of x t, evaluated at x t">
@@ -97,14 +97,14 @@
           <img src="assets/morphact-teaser.png?v=paper" width="3199" height="1106" fetchpriority="high" alt="Paper teaser: (a) a block-placement task progresses through free-space motion, contact, transport, and precise placement; (b) static adaptation applies one fixed update across changing contexts; (c) MorphAct uses a shared adaptation rule to generate context-dependent parameter updates. Operation labels are illustrative, not model inputs.">
 
         </a>
-        <figcaption><div><strong>A shared rule, context-dependent updates.</strong> The task progresses while the generated update changes with the observation.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
+        <figcaption><div><strong>A shared policy that morphs with its context.</strong> The instruction stays the same while interaction demands and generated parameter updates change.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
       </figure>
     </section>
 
 
 
     <section id="analysis" class="section wrap" aria-labelledby="analysis-title">
-      <div class="section-heading"><div><h2 id="analysis-title">Why contextual updates matter</h2></div><div class="section-intro"><p>Shared adaptation can produce competing descent directions across manipulation contexts. The paper examines this interaction through gradient alignment and one-step transfer, measured at a fixed checkpoint.</p></div></div>
+      <div class="section-heading"><div><h2 id="analysis-title">Where shared parameters face competing demands</h2></div><div class="section-intro"><p>Operation-level diagnostics on <strong>65 atomic tasks in RoboCasa365</strong> examine the demands placed on shared parameters. At one checkpoint, gradient alignment, one-step transfer, and parameter-group contributions reveal local adaptation trade-offs in both the vision–language and action modules.</p></div></div>
       <div class="diagnostic-math math-grid">
         <div><h3>Gradient alignment</h3><div class="equation"><math display="block" translate="no" aria-label="A task gradient is the gradient of the native loss with respect to module parameters. The task-pair alignment is the normalized inner product of two module gradients."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mrow><msub><mo>∇</mo><msub><mi>θ</mi><mi>m</mi></msub></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mfrac><mrow><mo>⟨</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>,</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>⟩</mo></mrow><mrow><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub></mrow></mfrac></mrow></mtd></mtr></mtable></math></div><p class="math-caption">For module <i>m</i>, negative cosine indicates competing local descent directions across task batches.</p></div>
         <div><h3>One-step transfer</h3><div class="equation"><math display="block" translate="no" aria-label="A source update takes a gradient step from the shared checkpoint. Transfer affinity is one minus the target loss after the update divided by the target loss before it."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>=</mo><mrow><mi>θ</mi><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msub><mi>Z</mi><mrow><mi>i</mi><mo>→</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>)</mo></mrow></mrow><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mfrac></mrow></mrow></mtd></mtr></mtable></math></div><p class="math-caption">A positive transfer score reduces the target loss; a negative score increases it. Every source update starts from the same checkpoint.</p></div>
@@ -113,7 +113,7 @@
       <a class="figure-link" data-lightbox data-figure-title="Gradient conflict and one-step transfer" href="assets/paper/diagnostic-summary.png" target="_blank" rel="noopener" aria-label="Enlarge Gradient conflict and one-step transfer">
         <img src="assets/paper/diagnostic-summary.png" width="1980" height="765" loading="lazy" decoding="async" alt="At a fixed checkpoint, within-task versus cross-task gradient-conflict rates are 38.94 versus 47.80 percent for VLM and 42.69 versus 48.28 for Action. All 260 source-improving updates increase loss on some other sampled tasks.">
       </a><figcaption><span><strong>Gradient compatibility, one-step transfer, and cancellation.</strong> Diagnostics at one fixed checkpoint, using sampled losses and gradients.</span></figcaption>
-    </figure><p class="diagnostic-notes"><strong>All 260 source-improving updates increase loss on other sampled tasks.</strong> Cross-task gradient conflict and cancellation are higher in both the VLM and action module. These measurements examine local losses at one fixed checkpoint.</p></div>
+    </figure><p class="diagnostic-notes"><strong>All 260 measured source-improving updates increase loss on other sampled tasks.</strong> Opposing parameter-group contributions can also cancel within a module. These local trade-offs motivate a shared parameter-generation mechanism whose outputs vary with the interaction context.</p></div>
       <div class="diagnostic-grid"><div><h3>Where conflict concentrates</h3><figure class="paper-figure">
       <a class="figure-link" data-lightbox data-figure-title="Where negative contributions concentrate" href="assets/paper/negative-contributions.png" target="_blank" rel="noopener" aria-label="Enlarge Where negative contributions concentrate">
         <img src="assets/paper/negative-contributions.png" width="2340" height="1105" loading="lazy" decoding="async" alt="Paper chart of pooled negative cross-task contribution shares by VLM and action parameter group, including the five largest groups and the remaining groups combined.">
@@ -126,8 +126,8 @@
     </section>
 
     <section id="method" class="section wrap" aria-labelledby="method-title">
-      <div class="section-heading"><div><h2 id="method-title">From adapted perception to adapted action</h2></div>
-        <div class="section-intro"><p>The action update should respond to the representation that guides control. MorphAct connects its generators through <strong>adapted vision–language features</strong>, together with robot state. Updates are generated once per observation and reused throughout the action chunk.</p></div>
+      <div class="section-heading"><div><h2 id="method-title">Morph from the environment, then act</h2></div>
+        <div class="section-intro"><p>MorphAct first generates vision–language updates from observation and instruction embeddings. The adapted VLM pass produces features that, together with robot state, condition action-side parameter generation. The two generators are coupled through <strong>the adapted representation used for control</strong>.</p><p>Both generators learn jointly through the native action objective, without operation labels or expert-adapter targets. Low-rank factors implement these contextual updates efficiently; the generated factors are reused throughout each action chunk.</p></div>
       </div>
       <figure class="paper-figure method-figure">
         <a class="figure-link" data-lightbox data-figure-title="Representation-coupled parameter generation" href="assets/morphact-method.png" target="_blank" rel="noopener" aria-label="Enlarge the paper method figure">
@@ -206,7 +206,7 @@
 
     <section id="results" class="section wrap" aria-labelledby="results-title">
       <div class="section-heading"><div><h2 id="results-title">Consistent gains across VLA architectures</h2></div>
-        <div class="section-intro"><p>MorphAct brings contextual specialization to VLA policies, improving overall task success across different architectures and benchmarks.</p></div>
+        <div class="section-intro"><p>Across X-VLA, π<sub>0</sub>, and π<sub>0.5</sub>, MorphAct improves average success on both LIBERO and Meta-World. Meta-World gains range from <strong>7.57 to 16.30 percentage points</strong>, supporting contextual parameterization across different VLA architectures.</p></div>
       </div>
 
       <div class="benchmark-panel" id="panel-metaworld" role="region" aria-labelledby="metaworld-title">
@@ -250,7 +250,7 @@
     </section>
 
     <section id="ablations" class="section wrap" aria-labelledby="ablations-title">
-      <div class="section-heading"><div><h2 id="ablations-title">The ingredients of contextual adaptation</h2></div>
+      <div class="section-heading"><div><h2 id="ablations-title">Why context and adapted features matter</h2></div>
         <div class="section-intro"><p>Six X-VLA variants on LIBERO isolate three choices: <strong>the generation condition, the modules receiving updates, and the features connecting the generators.</strong></p></div></div>
       <div class="ablation-charts" aria-label="Ablation success rates on LIBERO">
         <figure class="ablation-chart-panel"><h3>Mean over all suites</h3><div data-ablation-chart="4"></div></figure>
@@ -276,7 +276,7 @@
 
 
     <section id="real-world" class="section wrap" aria-labelledby="real-world-title">
-      <div class="section-heading"><div><h2 id="real-world-title">Real-world manipulation</h2></div><div class="section-intro"><p>MorphAct improves π<sub>0.5</sub> on all four physical tasks by <strong>8–14%</strong>. Each method is evaluated over 50 physical rollouts per task.</p><p>The paired demonstrations show separate trials at equal playback speed within each task; the scores summarize the full evaluations.</p></div></div>
+      <div class="section-heading"><div><h2 id="real-world-title">Real-world manipulation</h2></div><div class="section-intro"><p>MorphAct improves π<sub>0.5</sub> on all four physical tasks by <strong>8–14 percentage points</strong>. Each method is evaluated over 50 physical rollouts per task.</p><p>The paired demonstrations show separate trials at equal playback speed within each task; the scores summarize the full evaluations.</p></div></div>
       <div class="task-gallery"><article class="task-card">
       <a class="task-image" data-lightbox data-figure-title="Sort Letters — paper rollout frame" href="assets/paper/sort-letters.png" target="_blank" rel="noopener" aria-label="Enlarge the Sort Letters task frame"><img src="assets/paper/sort-letters.png" width="640" height="480" loading="lazy" alt="Sort Letters: representative rollout frame from the paper"></a>
       <div class="task-body"><p class="task-index">01 <span>+10%</span></p><h3>Sort Letters</h3><p class="task-description">Arrange letter blocks through coordinated grasps and changes in orientation.</p>
@@ -305,7 +305,7 @@
       <p class="chart-note">Photos reproduce the paper’s representative rollout frames. Success rates summarize all 50 rollouts per method and task.</p>
     </section>
   </main>
-  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand" href="#main"><img src="assets/morphact.svg" width="30" height="30" alt="">MorphAct</a><p>Contextual Parameterization of Vision–Language–Action Models</p><a class="back-to-top" href="#main">Back to top ↑</a></div></footer>
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand" href="#main"><img src="assets/morphact.svg" width="30" height="30" alt="">MorphAct</a><p>Robot Policies Morphing with the Worlds They Act In</p><a class="back-to-top" href="#main">Back to top ↑</a></div></footer>
   <dialog class="figure-dialog" id="figure-dialog" aria-labelledby="figure-dialog-title">
     <div class="dialog-toolbar">
       <h2 id="figure-dialog-title">Figure</h2>
