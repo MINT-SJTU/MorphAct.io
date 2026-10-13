@@ -367,6 +367,10 @@ h2 { font-family: var(--font-display); font-size: 40px; line-height: 1.18; font-
 }
 
 .method-detail { width: min(var(--reading-width), 100%); margin-inline: auto; }
+.method-detail .math-derivation { width: 100%; margin: 0 0 20px; }
+.method-detail .math-derivation h3 { font-size: 15px; margin-block: 13px 8px; }
+.diagnostic-lead .diagnostic-notes { margin: 0 auto 20px; }
+.diagnostic-grid .figure-reading { margin: 0 0 16px; }
 .ablation-findings { width: min(var(--reading-width), 100%); margin: 28px auto; font-size: 16px; line-height: 1.75; color: #45543f; }
 .ablation-findings p + p { margin-top: 14px; }
 .ablation-findings strong { color: #26392b; }
