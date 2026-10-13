@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="MorphAct: Robot Policies Morphing with the Worlds They Act In. A shared policy adjusts its effective weights to the current interaction through coupled vision–language and action parameter generation.">
+  <meta name="description" content="MorphAct: Robot Policies Morphing with the Worlds They Act In. Robot policies that adapt how they see and act as the world around them changes.">
   <meta property="og:title" content="MorphAct: Robot Policies Morphing with the Worlds They Act In">
-  <meta property="og:description" content="As environments and operations change, MorphAct generates context-dependent weights for perception and control within one shared robot policy.">
+  <meta property="og:description" content="The world changes with every interaction. MorphAct lets the policy change with it, bringing perception and action together in one adaptable robot policy.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mint-sjtu.github.io/MorphAct.io/">
   <meta property="og:image" content="https://mint-sjtu.github.io/MorphAct.io/assets/morphact-teaser.png?v=paper">
@@ -27,7 +27,7 @@
   <main id="main">
     <section class="hero wrap" aria-labelledby="paper-title">
       <h1 id="paper-title"><span class="title-line"><img src="assets/morphact.svg" width="50" height="50" alt=""><span class="paper-name">Morph<span>Act</span></span>: Robot Policies Morphing</span><span class="title-line">with the Worlds They Act In</span></h1>
-      <p class="hero-lead">One shared policy, with effective weights that adapt to the current interaction.</p>
+      <p class="hero-lead">The world changes with every interaction. MorphAct lets the policy change with it.</p>
       <div class="paper-credits">
         <ul class="author-row" aria-label="Authors">
           <li>Ziyan Liu<sup>*,1,2</sup></li>
@@ -83,8 +83,8 @@
     </section>
 
     <section id="overview" class="section wrap" aria-labelledby="overview-title">
-      <div class="section-heading"><div><h2 id="overview-title">Changing demands, context-dependent weights</h2></div>
-        <div class="section-intro"><p>As robots encounter more environments and operations, a shared policy must accommodate increasingly diverse demands. Even placing an object in a tray involves reaching, contact, transport, and precise placement under one instruction.</p><p>Conventional VLA policies change their activations and actions with context, while their effective weights stay fixed during execution. Different operations can favor competing parameter updates, creating trade-offs when trained together.</p><p>MorphAct lets the policy’s <strong>effective weights change with the current interaction</strong>. It learns a shared rule that generates context-dependent updates for the vision–language and action modules, enabling specialization within one policy.</p></div>
+      <div class="section-heading"><div><h2 id="overview-title">A changing world calls for a changing policy</h2></div>
+        <div class="section-intro"><p>We want robots to do more, in more places. Yet even a simple instruction—“put the object in the tray”—asks a robot to reach, make contact, carry, and place with precision. What matters for perception and control changes throughout the interaction, even when the goal stays the same.</p><p>A conventional robot policy brings one fixed set of learned parameters to all of these demands. As tasks and environments multiply, those parameters must reconcile increasingly different ways of seeing and acting.</p><p><strong>MorphAct brings adaptation into the policy itself.</strong> A shared rule generates parameter updates from the current scene, instruction, and robot state, giving one policy the flexibility to specialize as the interaction unfolds.</p></div>
       </div>
       <div class="equation-note policy-equation">
           <div class="equation"><math translate="no" display="block" aria-label="Y hat t equals pi with parameters theta plus delta theta of x t, evaluated at x t">
@@ -97,14 +97,14 @@
           <img src="assets/morphact-teaser.png?v=paper" width="3199" height="1106" fetchpriority="high" alt="Paper teaser: (a) a block-placement task progresses through free-space motion, contact, transport, and precise placement; (b) static adaptation applies one fixed update across changing contexts; (c) MorphAct uses a shared adaptation rule to generate context-dependent parameter updates. Operation labels are illustrative, not model inputs.">
 
         </a>
-        <figcaption><div><strong>A shared policy that morphs with its context.</strong> The instruction stays the same while interaction demands and generated parameter updates change.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
+        <figcaption><div><strong>A shared policy that morphs with its context.</strong> From reaching to precise placement, the demands change—and MorphAct adapts the policy along the way.</div></figcaption>
       </figure>
     </section>
 
 
 
     <section id="analysis" class="section wrap" aria-labelledby="analysis-title">
-      <div class="section-heading"><div><h2 id="analysis-title">Where shared parameters face competing demands</h2></div><div class="section-intro"><p>Operation-level diagnostics on <strong>65 atomic tasks in RoboCasa365</strong> examine the demands placed on shared parameters. At one checkpoint, gradient alignment, one-step transfer, and parameter-group contributions reveal local adaptation trade-offs in both the vision–language and action modules.</p></div></div>
+      <div class="section-heading"><div><h2 id="analysis-title">Different skills pull a shared policy in different directions</h2></div><div class="section-intro"><p>Learning one skill can work against another. When a shared policy learns many kinds of interaction, their updates can pull its parameters in opposing directions. This tension reaches both how the robot interprets a scene and how it acts.</p><p>We make that tension visible through <strong>65 atomic manipulation tasks in RoboCasa365</strong>. Gradient alignment reveals competing learning directions; one-step transfer shows their effect on other tasks; and the parameter-group analysis uncovers opposing contributions hidden inside each module. Together, they motivate a policy that can tailor its adaptation to the interaction at hand.</p></div></div>
       <div class="diagnostic-math math-grid">
         <div><h3>Gradient alignment</h3><div class="equation"><math display="block" translate="no" aria-label="A task gradient is the gradient of the native loss with respect to module parameters. The task-pair alignment is the normalized inner product of two module gradients."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mrow><msub><mo>∇</mo><msub><mi>θ</mi><mi>m</mi></msub></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msubsup><mi>c</mi><mrow><mi>i</mi><mi>j</mi></mrow><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>=</mo><mfrac><mrow><mo>⟨</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>,</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>⟩</mo></mrow><mrow><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>i</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub><msub><mrow><mo>‖</mo><msubsup><mi>g</mi><mi>j</mi><mrow><mo>(</mo><mi>m</mi><mo>)</mo></mrow></msubsup><mo>‖</mo></mrow><mn>2</mn></msub></mrow></mfrac></mrow></mtd></mtr></mtable></math></div><p class="math-caption">For module <i>m</i>, negative cosine indicates competing local descent directions across task batches.</p></div>
         <div><h3>One-step transfer</h3><div class="equation"><math display="block" translate="no" aria-label="A source update takes a gradient step from the shared checkpoint. Transfer affinity is one minus the target loss after the update divided by the target loss before it."><mtable columnalign="left" rowspacing="0.65em"><mtr><mtd><mrow><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>=</mo><mrow><mi>θ</mi><mo>−</mo><mi>η</mi><msub><mo>∇</mo><mi>θ</mi></msub><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>U</mi><mi>i</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd><mrow><msub><mi>Z</mi><mrow><mi>i</mi><mo>→</mo><mi>j</mi></mrow></msub><mo>=</mo><mrow><mn>1</mn><mo>−</mo><mfrac><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><msubsup><mi>θ</mi><mi>i</mi><mo>+</mo></msubsup><mo>)</mo></mrow></mrow><mrow><mi>ℒ</mi><mrow><mo>(</mo><msub><mi>V</mi><mi>j</mi></msub><mo>;</mo><mi>θ</mi><mo>)</mo></mrow></mrow></mfrac></mrow></mrow></mtd></mtr></mtable></math></div><p class="math-caption">A positive transfer score reduces the target loss; a negative score increases it. Every source update starts from the same checkpoint.</p></div>
@@ -113,11 +113,11 @@
       <a class="figure-link" data-lightbox data-figure-title="Gradient conflict and one-step transfer" href="assets/paper/diagnostic-summary.png" target="_blank" rel="noopener" aria-label="Enlarge Gradient conflict and one-step transfer">
         <img src="assets/paper/diagnostic-summary.png" width="1980" height="765" loading="lazy" decoding="async" alt="At a fixed checkpoint, within-task versus cross-task gradient-conflict rates are 38.94 versus 47.80 percent for VLM and 42.69 versus 48.28 for Action. All 260 source-improving updates increase loss on some other sampled tasks.">
       </a><figcaption><span><strong>Gradient compatibility, one-step transfer, and cancellation.</strong> Diagnostics at one fixed checkpoint, using sampled losses and gradients.</span></figcaption>
-    </figure><p class="diagnostic-notes"><strong>All 260 measured source-improving updates increase loss on other sampled tasks.</strong> Opposing parameter-group contributions can also cancel within a module. These local trade-offs motivate a shared parameter-generation mechanism whose outputs vary with the interaction context.</p></div>
+    </figure><p class="diagnostic-notes"><strong>Every source-improving update also increases loss on other tasks.</strong> At a common checkpoint, this occurs for all 260 updates we examine. MorphAct turns this tension into a design principle: share how to adapt, and let each interaction shape the update.</p></div>
       <div class="diagnostic-grid"><div><h3>Where conflict concentrates</h3><figure class="paper-figure">
       <a class="figure-link" data-lightbox data-figure-title="Where negative contributions concentrate" href="assets/paper/negative-contributions.png" target="_blank" rel="noopener" aria-label="Enlarge Where negative contributions concentrate">
         <img src="assets/paper/negative-contributions.png" width="2340" height="1105" loading="lazy" decoding="async" alt="Paper chart of pooled negative cross-task contribution shares by VLM and action parameter group, including the five largest groups and the remaining groups combined.">
-      </a><figcaption><span>Shares describe normalized negative contribution mass, not parameter counts.</span></figcaption>
+      </a><figcaption><span>Each share measures how much a parameter group contributes to the total negative alignment.</span></figcaption>
     </figure><p class="figure-reading">The action groups outside Transformer blocks, block 00, and block 11 account for <strong>78.88%</strong> of pooled negative contribution before rounding. Together, these groups contribute most of the measured negative mass on the action side.</p></div><div><h3>How it varies with depth</h3><figure class="paper-figure">
       <a class="figure-link" data-lightbox data-figure-title="Conflict across model depth" href="assets/paper/depth-profiles.png" target="_blank" rel="noopener" aria-label="Enlarge Conflict across model depth">
         <img src="assets/paper/depth-profiles.png" width="2340" height="1835" loading="lazy" decoding="async" alt="Six paper plots compare cross-task and within-task negative-cosine frequency and mean negative part across the vision, language, and action Transformer blocks.">
@@ -127,7 +127,7 @@
 
     <section id="method" class="section wrap" aria-labelledby="method-title">
       <div class="section-heading"><div><h2 id="method-title">Morph from the environment, then act</h2></div>
-        <div class="section-intro"><p>MorphAct first generates vision–language updates from observation and instruction embeddings. The adapted VLM pass produces features that, together with robot state, condition action-side parameter generation. The two generators are coupled through <strong>the adapted representation used for control</strong>.</p><p>Both generators learn jointly through the native action objective, without operation labels or expert-adapter targets. Low-rank factors implement these contextual updates efficiently; the generated factors are reused throughout each action chunk.</p></div>
+        <div class="section-intro"><p>MorphAct adapts <strong>how a robot understands its surroundings and how it acts within them</strong>. Its parameter updates respond to what the robot sees, what it has been asked to do, and its current state. One shared policy can take on a different configuration as the interaction changes.</p><p>The two sides adapt together. MorphAct first updates perception, then uses that adapted understanding to shape the action update. This connection is central: <strong>the update that prepares the robot to act is informed by the very representation that guides its next move</strong>. Both sides learn jointly from the action objective.</p></div>
       </div>
       <figure class="paper-figure method-figure">
         <a class="figure-link" data-lightbox data-figure-title="Representation-coupled parameter generation" href="assets/morphact-method.png" target="_blank" rel="noopener" aria-label="Enlarge the paper method figure">
@@ -159,13 +159,13 @@
   </g>
 </svg>
         </a>
-        <figcaption><div><strong>Representation-coupled parameter generation.</strong> Joint learning and chunk-level reuse are shown in the two lower panels.
+        <figcaption><div><strong>Perception and action adapt together.</strong> Two generators are connected through the policy’s adapted understanding of the scene.
           <span class="method-motion-caption">
-  <span data-method-caption-phase="vlm">VLM update</span>
+  <span data-method-caption-phase="vlm">Adapt perception</span>
   <span aria-hidden="true">→</span>
-  <span data-method-caption-phase="features">Adapted features</span>
+  <span data-method-caption-phase="features">Understand the scene</span>
   <span aria-hidden="true">→</span>
-  <span data-method-caption-phase="action">Action update</span>
+  <span data-method-caption-phase="action">Adapt action</span>
 </span></div></figcaption>
       </figure>
       <div class="math-derivation">
@@ -205,8 +205,8 @@
     </section>
 
     <section id="results" class="section wrap" aria-labelledby="results-title">
-      <div class="section-heading"><div><h2 id="results-title">Consistent gains across VLA architectures</h2></div>
-        <div class="section-intro"><p>Across X-VLA, π<sub>0</sub>, and π<sub>0.5</sub>, MorphAct improves average success on both LIBERO and Meta-World. Meta-World gains range from <strong>7.57 to 16.30 percentage points</strong>, supporting contextual parameterization across different VLA architectures.</p></div>
+      <div class="section-heading"><div><h2 id="results-title">Stronger robot policies across tasks and environments</h2></div>
+        <div class="section-intro"><p>The benefit extends across three different robot policies. On LIBERO and Meta-World, MorphAct raises average success for all three, with Meta-World gains of <strong>7.57–16.30 percentage points</strong>. The same approach improves real-world manipulation across all four tasks.</p></div>
       </div>
 
       <div class="benchmark-panel" id="panel-metaworld" role="region" aria-labelledby="metaworld-title">
@@ -250,17 +250,17 @@
     </section>
 
     <section id="ablations" class="section wrap" aria-labelledby="ablations-title">
-      <div class="section-heading"><div><h2 id="ablations-title">Why context and adapted features matter</h2></div>
-        <div class="section-intro"><p>Six X-VLA variants on LIBERO isolate three choices: <strong>the generation condition, the modules receiving updates, and the features connecting the generators.</strong></p></div></div>
+      <div class="section-heading"><div><h2 id="ablations-title">Adaptability comes from context and coordination</h2></div>
+        <div class="section-intro"><p>Knowing the task is only part of acting well: the interaction keeps changing. The X-VLA ablations on LIBERO show the value of <strong>responding to the current moment and connecting perception with action as they adapt</strong>.</p></div></div>
       <div class="ablation-charts" aria-label="Ablation success rates on LIBERO">
         <figure class="ablation-chart-panel"><h3>Mean over all suites</h3><div data-ablation-chart="4"></div></figure>
         <figure class="ablation-chart-panel"><h3>Long-horizon tasks</h3><div data-ablation-chart="3"></div></figure>
       </div>
       <p class="ablation-legend legend"><span class="ours-key">MorphAct</span><span class="baseline-key">Ablated variant</span></p>
       <div class="ablation-findings">
-        <p><strong>Context beyond task identity.</strong> Current-context generation reaches 97.20% mean success, versus 88.25% for Task-ID and 87.50% for a constant condition—a <span class="finding-gain">+8.95%</span> gain over Task-ID.</p>
-        <p><strong>Adapt both modules.</strong> Action-only reaches 81.00%; VLM-only, 43.50%. Adding upstream adaptation raises Action-only to 86.00%, even before coupling.</p>
-        <p><strong>Couple through adapted features.</strong> Mean success rises from 86.00% to 97.20% (<span class="finding-gain">+11.20%</span>). On Long, it rises from 71.60% to 93.20% (<span class="finding-gain">+21.60%</span>).</p>
+        <p><strong>Respond to the moment.</strong> A task label stays the same while the interaction changes. Adapting to the current context reaches 97.20% mean success, versus 88.25% for Task-ID and 87.50% for a constant condition—a <span class="finding-gain">+8.95%</span> gain over Task-ID.</p>
+        <p><strong>Let perception and action adapt together.</strong> Adapting action alone reaches 81.00%; perception alone, 43.50%. Giving the action policy adapted perception raises success to 86.00%.</p>
+        <p><strong>Make adapted perception guide action updates.</strong> Mean success rises from 86.00% to 97.20% (<span class="finding-gain">+11.20%</span>). On Long, it rises from 71.60% to 93.20% (<span class="finding-gain">+21.60%</span>).</p>
       </div>
       <details class="results-details"><summary>All ablation scores &amp; controlled changes <span aria-hidden="true">+</span></summary><p class="table-hint">Scroll to see every column ↔</p><div class="table-scroll" role="region" aria-label="Full X-VLA ablation results" tabindex="0"><table class="results-table ablation-table" data-benchmark="ablations">
             <caption>X-VLA ablations on LIBERO · success rate (%)</caption>
@@ -276,7 +276,7 @@
 
 
     <section id="real-world" class="section wrap" aria-labelledby="real-world-title">
-      <div class="section-heading"><div><h2 id="real-world-title">Real-world manipulation</h2></div><div class="section-intro"><p>MorphAct improves π<sub>0.5</sub> on all four physical tasks by <strong>8–14 percentage points</strong>. Each method is evaluated over 50 physical rollouts per task.</p><p>The paired demonstrations show separate trials at equal playback speed within each task; the scores summarize the full evaluations.</p></div></div>
+      <div class="section-heading"><div><h2 id="real-world-title">Adaptation that carries into the real world</h2></div><div class="section-intro"><p>From arranging letter blocks to putting objects inside a cabinet, a robot must carry its goal through a sequence of changing interactions. MorphAct improves success on all four physical tasks, with gains of <strong>8–14 percentage points</strong> over π<sub>0.5</sub>.</p></div></div>
       <div class="task-gallery"><article class="task-card">
       <a class="task-image" data-lightbox data-figure-title="Sort Letters — paper rollout frame" href="assets/paper/sort-letters.png" target="_blank" rel="noopener" aria-label="Enlarge the Sort Letters task frame"><img src="assets/paper/sort-letters.png" width="640" height="480" loading="lazy" alt="Sort Letters: representative rollout frame from the paper"></a>
       <div class="task-body"><p class="task-index">01 <span>+10%</span></p><h3>Sort Letters</h3><p class="task-description">Arrange letter blocks through coordinated grasps and changes in orientation.</p>
