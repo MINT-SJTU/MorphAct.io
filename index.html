@@ -82,6 +82,27 @@
       <figcaption>MorphAct in the real world · π<sub>0.5</sub> with contextual adaptation</figcaption></figure>
     </section>
 
+    <section id="overview" class="section wrap" aria-labelledby="overview-title">
+      <div class="section-heading"><div><h2 id="overview-title">Shared learning, contextual specialization</h2></div>
+        <div class="section-intro"><p>A manipulation task moves from reaching to contact, transport, and precise placement. The demands on perception and control change along the way.</p><p>MorphAct learns a shared rule that maps the current observation, instruction, and robot state to <strong>context-dependent parameter updates</strong>. The policy specializes as the scene changes.</p></div>
+      </div>
+      <div class="equation-note policy-equation">
+          <div class="equation"><math translate="no" display="block" aria-label="Y hat t equals pi with parameters theta plus delta theta of x t, evaluated at x t">
+            <mrow><msub><mover><mi>Y</mi><mo>^</mo></mover><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mrow><mi>θ</mi><mo>+</mo><mstyle mathcolor="#356b58"><mi>Δ</mi><mi>θ</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mstyle></mrow></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mrow>
+          </math></div>
+          <p><span class="inline-math">x<sub>t</sub> = (o<sub>t</sub>, ℓ, s<sub>t</sub>)</span> is the current context; <span class="inline-math">Δθ(x<sub>t</sub>)</span> is its generated update; <span class="inline-math">Ŷ<sub>t</sub></span> is the predicted action chunk.</p>
+        </div>
+      <figure class="paper-figure teaser-figure">
+        <a class="figure-link" data-lightbox data-figure-title="The MorphAct idea" href="assets/morphact-teaser.png?v=paper" target="_blank" rel="noopener" aria-label="Enlarge the MorphAct teaser">
+          <img src="assets/morphact-teaser.png?v=paper" width="3199" height="1106" fetchpriority="high" alt="Paper teaser: (a) a block-placement task progresses through free-space motion, contact, transport, and precise placement; (b) static adaptation applies one fixed update across changing contexts; (c) MorphAct uses a shared adaptation rule to generate context-dependent parameter updates. Operation labels are illustrative, not model inputs.">
+
+        </a>
+        <figcaption><div><strong>A shared rule, context-dependent updates.</strong> The task progresses while the generated update changes with the observation.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
+      </figure>
+    </section>
+
+
+
     <section id="analysis" class="section wrap" aria-labelledby="analysis-title">
       <div class="section-heading"><div><h2 id="analysis-title">Why contextual updates matter</h2></div><div class="section-intro"><p>Shared adaptation can produce competing descent directions across manipulation contexts. The paper examines this interaction through gradient alignment and one-step transfer, measured at a fixed checkpoint.</p></div></div>
       <div class="diagnostic-math math-grid">
@@ -103,27 +124,6 @@
       </a><figcaption><span>Complete depth profiles. The lower panels use independent y-axis scales.</span></figcaption>
     </figure></div></div>
     </section>
-
-    <section id="overview" class="section wrap" aria-labelledby="overview-title">
-      <div class="section-heading"><div><h2 id="overview-title">Shared learning, contextual specialization</h2></div>
-        <div class="section-intro"><p>A manipulation task moves from reaching to contact, transport, and precise placement. The demands on perception and control change along the way.</p><p>MorphAct learns a shared rule that maps the current observation, instruction, and robot state to <strong>context-dependent parameter updates</strong>. The policy specializes as the scene changes.</p></div>
-      </div>
-      <div class="equation-note policy-equation">
-          <div class="equation"><math translate="no" display="block" aria-label="Y hat t equals pi with parameters theta plus delta theta of x t, evaluated at x t">
-            <mrow><msub><mover><mi>Y</mi><mo>^</mo></mover><mi>t</mi></msub><mo>=</mo><msub><mi>π</mi><mrow><mi>θ</mi><mo>+</mo><mstyle mathcolor="#356b58"><mi>Δ</mi><mi>θ</mi><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mstyle></mrow></msub><mo>(</mo><msub><mi>x</mi><mi>t</mi></msub><mo>)</mo></mrow>
-          </math></div>
-          <p><span class="inline-math">x<sub>t</sub> = (o<sub>t</sub>, ℓ, s<sub>t</sub>)</span> is the current context; <span class="inline-math">Δθ(x<sub>t</sub>)</span> is its generated update; <span class="inline-math">Ŷ<sub>t</sub></span> is the predicted action chunk.</p>
-        </div>
-      <figure class="paper-figure teaser-figure">
-        <a class="figure-link" data-lightbox data-figure-title="The MorphAct idea" href="assets/morphact-teaser.png?v=paper" target="_blank" rel="noopener" aria-label="Enlarge the MorphAct teaser">
-          <img src="assets/morphact-teaser.png?v=paper" width="3199" height="1106" fetchpriority="high" alt="Paper teaser: (a) a block-placement task progresses through free-space motion, contact, transport, and precise placement; (b) static adaptation applies one fixed update across changing contexts; (c) MorphAct uses a shared adaptation rule to generate context-dependent parameter updates. Operation labels are illustrative, not model inputs.">
-
-        </a>
-        <figcaption><div><strong>A shared rule, context-dependent updates.</strong> The task progresses while the generated update changes with the observation.<span class="figure-note">Operation labels are illustrative, not model inputs. Parameter blocks are schematic.</span></div></figcaption>
-      </figure>
-    </section>
-
-
 
     <section id="method" class="section wrap" aria-labelledby="method-title">
       <div class="section-heading"><div><h2 id="method-title">From adapted perception to adapted action</h2></div>
