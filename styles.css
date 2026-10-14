@@ -367,7 +367,12 @@ a:active, button:active { transform: translateY(2px); }
 .hero-attribution .institution-logos { justify-content: center; gap: 32px; margin-block: 20px; }
 .hero-attribution .author-emails { font-size: 16px; }
 .hero-attribution .author-emails p { justify-content: center; max-width: none; margin-top: 8px; }
-.paper-availability { max-width: none; margin-top: 14px; font-size: var(--step-small); color: var(--muted); }
+.resource-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.resource { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--green-dark); font-size: var(--step-small); font-weight: 700; opacity: 1; }
+.resource:disabled { color: var(--muted); }
+.resource svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.availability { padding-left: 9px; border-left: 1px solid var(--line); font-weight: 400; font-size: 12px; }
+.resource[href]:hover { border-color: var(--green); }
 @media (max-width: 850px) {
   .hero-attribution .author-row { gap: 8px 24px; }
   .hero-attribution .affiliations { gap: 8px 20px; }
