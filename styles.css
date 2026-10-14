@@ -375,6 +375,7 @@ a:active, button:active { transform: translateY(2px); }
 .resource svg { width: 16px; height: 16px; fill: currentColor; }
 .availability { font-weight: 400; font-size: 12px; }
 .resource[href]:hover { background: var(--resource-hover); }
+.resource:focus-visible { outline-color: var(--resource-fill); }
 @media (max-width: 850px) {
   .hero-attribution .author-row { gap: 8px 24px; }
   .hero-attribution .affiliations { gap: 8px 20px; }
