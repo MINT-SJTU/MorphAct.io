@@ -1,6 +1,6 @@
 // Plot the manuscript tables directly. Both benchmarks are always visible.
 const escapeText = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const signed = value => `${value > 0.005 ? '+' : value < -0.005 ? '−' : ''}${Math.abs(value).toFixed(2)}%`;
+const signed = value => `${value > 0.005 ? '+' : value < -0.005 ? '−' : ''}${Math.abs(value).toFixed(2)} pp`;
 function pairedColumns(labels, model, benchmark) {
   const width=380, left=36, bottom=273, top=61, plotHeight=bottom-top, step=82;
   const min = benchmark === 'libero' ? 84 : 15;
@@ -41,6 +41,13 @@ for(const table of document.querySelectorAll('.results-table:not(.ablation-table
     return `<figure class="backbone-chart"><h4>${model.name}</h4><p class="backbone-summary"><span>${model.baseline[4].toFixed(2)}</span><span class="score-arrow" aria-hidden="true">→</span><strong>${model.ours[4].toFixed(2)}%</strong><b>${signed(model.ours[4]-model.baseline[4])}</b></p><p class="mean-label">Overall success</p>${pairedColumns(labels,model,table.dataset.benchmark)}</figure>`;
   }).join('');
   container.hidden=false;
+}
+// Keep the full demonstration available through native video controls.
+const demoPlayer = document.getElementById('demo-video');
+const demoReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (demoReducedMotion.matches) {
+  demoPlayer.autoplay = false;
+  demoPlayer.pause();
 }
 const ablationRows=[...document.querySelector('.ablation-table').tBodies[0].rows];
 for(const container of document.querySelectorAll('[data-ablation-chart]')) {
