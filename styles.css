@@ -164,7 +164,6 @@ h3, h4 { font-size: var(--step-lead); line-height: 1.15; font-weight: 700; lette
 .neutral-label { fill: #6e7d65; }
 .gain-bg.largest-gain { fill: #215d43; }
 .gain-label.largest-gain { fill: #fff; }
-.change-link { fill: none; stroke: #215d43; stroke-width: 1.2; }
 .suite-label { font-size: 12px; fill: #3f4f40; }
 .benchmark-finding { font-size: var(--step-body); margin-top: 32px; color: #405941; }
 .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }

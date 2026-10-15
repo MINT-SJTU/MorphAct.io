@@ -70,7 +70,7 @@
           { transform: 'none' }
         ], { duration: 900, delay, easing, fill: 'both' }));
       }
-      for (const label of group.querySelectorAll('.bar-value, .ablation-value, .gain-bg, .gain-label, .change-link')) {
+      for (const label of group.querySelectorAll('.bar-value, .ablation-value, .gain-bg, .gain-label')) {
         state.animations.push(label.animate([{ opacity: 0 }, { opacity: 1 }],
           { duration: 180, delay: delay + 900, easing, fill: 'both' }));
       }

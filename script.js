@@ -20,10 +20,6 @@ function pairedColumns(labels, model, benchmark) {
     svg+=`<g class="suite-group"><title>${escapeText(description)}</title>`;
     if (!negative) svg+=`<rect class="gain-bg${i===highlightIndex?' largest-gain':''}${!positive?' neutral-bg':''}" x="${center-33}" y="9" width="66" height="23" rx="3"/><text class="gain-label${i===highlightIndex?' largest-gain':''}${!positive?' neutral-label':''}" x="${center}" y="25" text-anchor="middle">${signed(gain)}</text>`;
     svg+=`<rect class="bar-baseline" data-value="${model.baseline[i]}" x="${baselineX}" y="${y(model.baseline[i])}" width="${barWidth}" height="${bottom-y(model.baseline[i])}" rx="1"/><rect class="bar-ours" data-value="${model.ours[i]}" x="${oursX}" y="${y(model.ours[i])}" width="${barWidth}" height="${bottom-y(model.ours[i])}" rx="1"/>`;
-    if (positive) {
-      const end=y(model.ours[i]), start=y(model.baseline[i]);
-      svg+=`<path class="change-link" d="M ${center} ${start} V ${end} M ${center-2.5} ${end+4} L ${center} ${end} L ${center+2.5} ${end+4}"/>`;
-    }
     svg+=`<text class="bar-value baseline-value" x="${baselineX+barWidth/2}" y="${y(model.baseline[i])-7}" text-anchor="middle">${model.baseline[i].toFixed(2)}</text><text class="bar-value ours-value" x="${oursX+barWidth/2}" y="${y(model.ours[i])-7}" text-anchor="middle">${model.ours[i].toFixed(2)}</text>`;
     if(label==='Very Hard') svg+=`<text class="suite-label" x="${center}" y="292" text-anchor="middle"><tspan x="${center}">Very Hard</tspan></text>`;
     else svg+=`<text class="suite-label" x="${center}" y="292" text-anchor="middle">${escapeText(label)}</text>`;
